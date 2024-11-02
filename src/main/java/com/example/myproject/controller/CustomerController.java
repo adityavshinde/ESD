@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/api/v1/customer")
 
 public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<CustomerResponse> createCustomer(@RequestBody @Valid CustomerRequest request) {
+    public ResponseEntity<?> createCustomer(@RequestBody @Valid CustomerRequest request) {
         return ResponseEntity.ok(customerService.createCustomer(request));
     }
 }
