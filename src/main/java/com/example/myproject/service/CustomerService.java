@@ -5,10 +5,12 @@ import com.example.myproject.dto.CustomerResponse;
 import com.example.myproject.entity.Customer;
 import com.example.myproject.mapper.CustomerMapper;
 import com.example.myproject.repo.CustomerRepo;
+import com.example.myproject.dto.LoginRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @RequiredArgsConstructor
@@ -16,10 +18,24 @@ public class CustomerService {
 
     private final CustomerRepo repo;
     private final CustomerMapper mapper;
-    public CustomerResponse createCustomer(CustomerRequest request) {
+
+    public String creating(CustomerRequest request) {
         Customer customer = mapper.toEntity(request);
-        Customer cust = repo.save(customer);
-        return mapper.toCustomerResponse(cust);
+        repo.save(customer);
+        return "created";
+    }
+
+    public String loginchecking(LoginRequest request) {
+        Customer customer = repo.findByEmail(request.email());
+        if (customer == null) {
+            return "Invalid email";
+        }
+        else{
+            if(customer.getPassword().equals(request.password())){
+                return "Login successful";
+            }
+            else return "Invalid password";
+        }
     }
 }
 
