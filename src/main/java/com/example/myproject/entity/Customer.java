@@ -34,4 +34,5 @@ public class Customer {
 
     @Column(name="pincode", nullable = false)
     private String pincode;
+
 }
